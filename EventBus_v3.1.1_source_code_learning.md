@@ -6,10 +6,10 @@
 
 
 ### 注册订阅者 register(Object subscriber)
-通过 <code>subscriberMethodFinder.findSubscriberMethods() </code>方法，通过反射的方式找到 subscriber 类及其父类(非系统类)里所有的订阅方法列表 (subscriberMethods)，并缓存到 METHOD_CACHE 里；接下来遍历 subscriberMethods，循环调用 <code>subscribe()</code>方法，在这个方法里面注意 subscriptionsByEventType 和 typesBySubscriber 的初始化，最后，如果订阅方法是 sticky 的，则立即 post 去执行。
-subscriptionsByEventType： <eventType - subscriptions> （Subscription 类，里面有订阅者和订阅方法信息）
-typesBySubscriber： <subscriber - eventTypes>
-有了上面两个 map，就能找到某个 subscriber 订阅的 eventType， 也能通过 eventType 找到所有匹配的订阅关系（订阅者-订阅方法）
+通过 <code>subscriberMethodFinder.findSubscriberMethods()</code>方法，通过反射的方式找到 subscriber 类及其父类(非系统类)里所有的订阅方法列表 (subscriberMethods)，并缓存到 METHOD_CACHE 里；接下来遍历 subscriberMethods，循环调用 <code>subscribe()</code>方法，在这个方法里面注意 subscriptionsByEventType 和 typesBySubscriber 的初始化，最后，如果订阅方法是 sticky 的，则立即 post 去执行。    
+subscriptionsByEventType： <eventType - subscriptions> （Subscription 类，里面有订阅者和订阅方法信息）    
+typesBySubscriber： <subscriber - eventTypes>    
+有了上面两个 map，就能找到某个 subscriber 订阅的 eventType， 也能通过 eventType 找到所有匹配的订阅关系（订阅者-订阅方法）。
 
     public void register(Object subscriber) {
         Class<?> subscriberClass = subscriber.getClass();
@@ -201,7 +201,7 @@ currentPostingThreadState 是一个 ThreadLocal 对象，所以每条 post event
 
 ### unregister(Object subscriber)
 
-就是把 register subscriber 时对 subscriber 做的缓存做一下清理。
+把 register subscriber 时对 subscriber 做的缓存做一下清理。
 
     public synchronized void unregister(Object subscriber) {
         List<Class<?>> subscribedTypes = typesBySubscriber.get(subscriber);
