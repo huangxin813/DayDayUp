@@ -112,7 +112,8 @@ typesBySubscriber： <subscriber - eventTypes>
     }
 
 ### 发送事件 post(Object event)
-currentPostingThreadState 是一个 ThreadLocal 对象，所以每条 post event 的线程都有自己的一个 postingState，拿到线程所属的 postingState 后，遍历 eventQueue 循环调用 <code>postSingleEvent()</code>; 在 <code>postSingleEvent()</code> 里，找到 eventClass 对应的所有 eventTypes（由 eventClass、它实现的 interface 以及它的父类构成); 在 <code>postSingleEventForEventType()</code>方法里，由 eventType 以及之前 register subscriber 时初始化过的 subscriptionsByEventType 找到对应的 subscriptions，依次 post 去做处理。
+currentPostingThreadState 是一个 ThreadLocal 对象，所以每条 post event 的线程都有自己的一个 postingState，拿到线程所属的 postingState 后，遍历 eventQueue 循环调用 <code>postSingleEvent()</code>; 在 <code>postSingleEvent()</code> 里，找到 eventClass 对应的所有 eventTypes（由 eventClass、它实现的 interface 以及它的父类构成); 在 <code>postSingleEventForEventType()</code>方法里，由 eventType 以及之前 register subscriber 时初始化过的 subscriptionsByEventType 找到对应的 subscriptions，依次 post 去做处理。    
+上面找 eventClass 的所有 eventTypes 时，除了 eventClass 自身外，还包含了它的接口和父类。比如 <code>EventChild extends EventSuper</code>，ActivityA 注册了 EventSuper， ActivityB 注册了 EventChild, 这个时候如果 <code>post(EventChild)</code>，两个 activity 里的订阅方法都会回调。
 
     public void post(Object event) {
         PostingThreadState postingState = currentPostingThreadState.get();
