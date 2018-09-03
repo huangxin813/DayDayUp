@@ -5,18 +5,18 @@
 ### 构造函数
 <code>ThreadPoolExecutor(int corePoolSize,  maxPoolSize, keepAliveTime, unit, BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory)</code>
 
-corePoolSize:   核心线程数
-maxPoolSize:   最大线程数
-keepAliveTime:  非核心线程最多空闲的时间，超过这个时间线程就销毁
-unit:   上一个参数（时间）的单位
-workQueue:  任务队列
-threadFactory: 线程工厂
+corePoolSize:   核心线程数    
+maxPoolSize:   最大线程数    
+keepAliveTime:  非核心线程最多空闲的时间，超过这个时间线程就销毁    
+unit:   上一个参数（时间）的单位    
+workQueue:  任务队列    
+threadFactory: 线程工厂    
 
-主要看 <code>corePoolSize、maxPoolSize、workQueue</code> 三个参数。
-当往线程池里提交新任务时，先判定线程池中核心线程的数量：
-1、核心线程数量 < coreSize, 直接起新线程来执行新的任务；
-2、核心线程数量 == coreSize，再看 workQueue 是否装满：
-   a) 如果队列未满，新任务直接进入到 workQueue；
+主要看 <code>corePoolSize、maxPoolSize、workQueue</code> 三个参数。    
+当往线程池里提交新任务时，先判定线程池中核心线程的数量：    
+1、核心线程数量 < coreSize, 直接起新线程来执行新的任务；    
+2、核心线程数量 == coreSize，再看 workQueue 是否装满：    
+   a) 如果队列未满，新任务直接进入到 workQueue；    
    b) 如果 workQueue 满了，判断线程池中线程数量：如果线程数量 < maxPoolSize，起新线程执行新任务；如果线程数量 == maxPoolSize, 则 Reject 异常
 
 
